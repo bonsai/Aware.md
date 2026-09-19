@@ -1,34 +1,61 @@
 # Aware.md
 
-> **Aware is a declaration of what an agent should pay attention to.**
+> **Aware = 関心・気づき・注意の向き。**
 
-`Aware.md` is a small, human-readable metadata convention for declaring the **attention surface** of an Agent, Workflow, Repository, or Company.
+`Aware.md` は、Agent・Team・Repository・MicroWorld が **何に関心を向け、何を認識するか** を宣言する小さなメタデータ規約。
 
-The purpose is not to describe everything an agent can do. It describes **what it should notice, monitor, and bring back as a signal**.
+Aware は Skill や Action ではない。  
+**世界の状態に対して、何を意識するか** を表す。
 
-## Core idea
+## Position
 
 ```text
-Scene
+WORLD
   ↓
-Aware
+MicroWorld
   ↓
-Observe
+SYSTEM
   ↓
-Signal
+STATE
   ↓
-Decision / Action
+AWARE
+  ↓
+SCRUM
+  ↓
+OPERATION
+  ↓
+STATE'
 ```
 
-### Aware is not Skill
+- **World** = マイクロワールドの総体
+- **System** = 構成要素と関係
+- **State** = System の現在状態
+- **Aware** = State の何に関心を向けるか
+- **Scrum** = State に応じて解決する活動
+- **Operation** = State を変化させる操作
 
-- **Aware** = what should I pay attention to?
-- **Skill** = what can I do about it?
-- **Workflow** = when and how should the work happen?
-- **Result** = what happened?
-- **Deviation** = where did reality differ from expectation?
+## Aware = Interest
 
-Therefore an Agent may share Skills while having different Aware definitions.
+このプロジェクトでは、基本的に **Aware と Interest を分離しない**。
+
+```text
+Aware
+= Interest
+= 関心・気づき・注意の向き
+```
+
+主体が世界のどこを見るか、何を気にするか、何を信号として拾うかを Aware と呼ぶ。
+
+## Aware is not Skill
+
+- **Aware** = 何に気づくか
+- **Skill** = 何ができるか
+- **Operation** = 実際に何をするか
+- **State** = 今どうなっているか
+- **Event** = State が変化した記録
+- **Health** = State に対する評価
+
+したがって、同じ Skill を持つ Agent でも Aware が異なれば、見るもの・拾うもの・解決するものが異なる。
 
 ## Minimal format
 
@@ -36,18 +63,18 @@ Therefore an Agent may share Skills while having different Aware definitions.
 # Aware
 
 ## Mission
-<why this attention exists>
+<この関心が存在する理由>
 
 ## Attention
-- <signal 1>
-- <signal 2>
-- <signal 3>
+- <関心 1>
+- <関心 2>
+- <関心 3>
 
 ## Observe
-- <what to inspect>
+- <何を見るか>
 
 ## Detect
-- <condition or change to notice>
+- <何の変化・状態を捉えるか>
 
 ## Output
 - signal
@@ -56,13 +83,13 @@ Therefore an Agent may share Skills while having different Aware definitions.
 - next_attention
 ```
 
-## Example: Repository Observer
+## Repository Observer
 
 ```markdown
 # Aware
 
 ## Mission
-Understand the current state and change of a repository.
+Repository の現在 State と変化に関心を持つ。
 
 ## Attention
 - activity
@@ -86,77 +113,45 @@ Understand the current state and change of a repository.
 - repository metadata
 
 ## Detect
-- significant change
+- significant_change
 - inactivity
-- new agent or workflow
-- growing technical debt
-- unusual activity
-- blocked work
+- new_agent
+- blocked_work
+- technical_debt
+- unusual_activity
 
 ## Output
-- repository_metadata
-- metrics
 - signal
 - deviation
 - opportunity
 - next_attention
 ```
 
-## Example: CEO
+## Bonsai / bons.ai
 
-```markdown
-# Aware
-
-## Mission
-Maintain awareness of company direction and value creation.
-
-## Attention
-- mission
-- market
-- customer
-- value
-- strategy
-- priority
-- resources
-- risk
-- results
-- deviation
-- opportunity
-
-## Output
-- direction
-- priority
-- start
-- stop
-- continue
-- resource
-- next_attention
-```
-
-## Company model
-
-`bonsai.company` can use Aware as a common metadata layer across repositories.
+World において、**Bonsai は Scrum を組織する**。
 
 ```text
-GitHub
+WORLD
   ↓
-Observation
+AWARE
   ↓
-Aware
+Bonsai
   ↓
-Metadata
+SCRUM / TEAM
   ↓
-Statistics
+Agent
   ↓
-bonsai.company
+Operation
   ↓
-CEO Attention
+STATE'
 ```
 
-A repository may contain agents, data, tools, workflows, code, schemas, and UI in any arrangement. Aware does not require physically separating them. Instead, metadata makes the organization observable.
+**bons.ai は World に関与する代表的な AI** として、State を観測し、Aware に基づいて Scrum の活動を支援する。
 
 ## Design principle
 
-> **Do not organize reality to fit the model. Observe reality and let metadata describe it.**
+> **World をモデルに合わせるのではなく、World に関心を向け、State を観測し、Scrum を組織する。**
 
-Aware is therefore intentionally small. It is an attention contract, not an ontology of everything.
+Aware は大きな Ontology ではない。  
+**誰が、世界の何に関心を向けているかを表す最小の宣言**である。
