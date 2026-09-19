@@ -1,157 +1,133 @@
 # Aware.md
 
-> **Aware = 関心・気づき・注意の向き。**
+> **Aware = Agent が現在、意識・認識しているもの。**
 
-`Aware.md` は、Agent・Team・Repository・MicroWorld が **何に関心を向け、何を認識するか** を宣言する小さなメタデータ規約。
+Aware は Concern と分ける。
 
-Aware は Skill や Action ではない。  
-**世界の状態に対して、何を意識するか** を表す。
+- **Concern** = 何を心がける／見ようとする／見るべきとするか
+- **Aware** = いま何に気づいている／認識しているか
+- **Observation** = 実際に観測した事実
 
 ## Position
 
 ```text
-WORLD
+AGENT
   ↓
-MicroWorld
+CONCERN
   ↓
-SYSTEM
+ATTENTION
+  ↓
+AWARENESS
+  ↓
+OBSERVATION
   ↓
 STATE
+```
+
+Concern が「見る方向」を決め、Attention がその方向へ注意を向け、Aware はその結果として Agent の現在の認識に上がっているものを表す。
+
+## Concern と Aware
+
+### Concern
+
+Agent ごとに異なる。
+
+```text
+Concern
+├─ Care       心がけている
+├─ Intention  見ようとしている
+└─ Priority   見るべき
+```
+
+Concern は、まだ気づいていない対象も含む。
+
+### Aware
+
+Agent が現在認識しているもの。
+
+「見るべき」と定めているだけでは Aware ではない。
+
+```text
+Concern
+  ↓
+「異常を見るべき」
+  ↓
+Observation
+  ↓
+「API の応答時間が急増した」
+  ↓
+Aware
+```
+
+## Aware is not
+
+- **Concern** = 関心の方向
+- **Aware** = 現在の認識
+- **Observation** = 観測された事実
+- **State** = System の現在状態
+- **Health** = State に対する評価
+- **Skill** = できること
+- **Goal** = 到達したい状態
+- **Issue** = 解決対象
+- **Operation** = 状態を変化させる操作
+
+## Minimal format
+
+```yaml
+aware:
+  - subject: <認識している対象>
+    observation: <観測内容>
+    significance: <なぜ意識に上がっているか>
+    confidence: <認識の確度>
+    observed_at: <時刻>
+```
+
+最小構成なら、単に対象と観測内容だけでもよい。
+
+```yaml
+aware:
+  - subject: repository
+    observation: new_pull_request
+```
+
+## Stateとの関係
+
+Aware は State そのものではない。
+
+```text
+STATE
+  ↓
+OBSERVATION
   ↓
 AWARE
   ↓
-SCRUM
+ISSUE
   ↓
 OPERATION
   ↓
 STATE'
 ```
 
-- **World** = マイクロワールドの総体
-- **System** = 構成要素と関係
-- **State** = System の現在状態
-- **Aware** = State の何に関心を向けるか
-- **Scrum** = State に応じて解決する活動
-- **Operation** = State を変化させる操作
+同じ State でも Agent の Concern が違えば、Aware になる対象は異なる。
 
-## Aware = Interest
+## Agent
 
-このプロジェクトでは、基本的に **Aware と Interest を分離しない**。
+Aware は Agent が持つ現在の認識である。
 
 ```text
-Aware
-= Interest
-= 関心・気づき・注意の向き
+AGENT
+├─ CONCERN   何を気にするか
+├─ AWARE     今なにに気づいているか
+├─ SKILL     なにができるか
+├─ GOAL      どこへ進みたいか
+├─ ISSUE     なにを解決するか
+└─ OPERATION なにをするか
 ```
 
-主体が世界のどこを見るか、何を気にするか、何を信号として拾うかを Aware と呼ぶ。
+複数 Agent が同じ World を見ても、Concern と Observation が異なれば Aware は異なる。
 
-## Aware is not Skill
+## Principle
 
-- **Aware** = 何に気づくか
-- **Skill** = 何ができるか
-- **Operation** = 実際に何をするか
-- **State** = 今どうなっているか
-- **Event** = State が変化した記録
-- **Health** = State に対する評価
+> **Concern は見る方向。Aware は、いま見えているもの。**
 
-したがって、同じ Skill を持つ Agent でも Aware が異なれば、見るもの・拾うもの・解決するものが異なる。
-
-## Minimal format
-
-```markdown
-# Aware
-
-## Mission
-<この関心が存在する理由>
-
-## Attention
-- <関心 1>
-- <関心 2>
-- <関心 3>
-
-## Observe
-- <何を見るか>
-
-## Detect
-- <何の変化・状態を捉えるか>
-
-## Output
-- signal
-- deviation
-- opportunity
-- next_attention
-```
-
-## Repository Observer
-
-```markdown
-# Aware
-
-## Mission
-Repository の現在 State と変化に関心を持つ。
-
-## Attention
-- activity
-- structure
-- agents
-- workflows
-- data
-- tools
-- issues
-- pull_requests
-- releases
-- dependencies
-- deviation
-
-## Observe
-- commits
-- files
-- GitHub Actions
-- issues
-- pull requests
-- repository metadata
-
-## Detect
-- significant_change
-- inactivity
-- new_agent
-- blocked_work
-- technical_debt
-- unusual_activity
-
-## Output
-- signal
-- deviation
-- opportunity
-- next_attention
-```
-
-## Bonsai / bons.ai
-
-World において、**Bonsai は Scrum を組織する**。
-
-```text
-WORLD
-  ↓
-AWARE
-  ↓
-Bonsai
-  ↓
-SCRUM / TEAM
-  ↓
-Agent
-  ↓
-Operation
-  ↓
-STATE'
-```
-
-**bons.ai は World に関与する代表的な AI** として、State を観測し、Aware に基づいて Scrum の活動を支援する。
-
-## Design principle
-
-> **World をモデルに合わせるのではなく、World に関心を向け、State を観測し、Scrum を組織する。**
-
-Aware は大きな Ontology ではない。  
-**誰が、世界の何に関心を向けているかを表す最小の宣言**である。
+Aware は「意識そのもの」を哲学的に定義するための大きな概念ではなく、Agent が現在扱える認識を表す最小の状態として扱う。
